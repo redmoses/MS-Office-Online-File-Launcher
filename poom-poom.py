@@ -4,7 +4,7 @@ import ConfigParser
 
 def load_auth_info():
     config = ConfigParser.ConfigParser()
-    config.read('.authentication')
+    config.read('.config')
     app_key = config.get('Auth', 'APP_KEY')
     app_secret = config.get('Auth', 'APP_SECRET')
     return app_key, app_secret
@@ -21,7 +21,6 @@ def connect():
     access_token, user_id = flow.finish(code)
     db_client = dropbox.client.DropboxClient(access_token)
     return db_client
-
 
 
 if __name__ == '__main__':
