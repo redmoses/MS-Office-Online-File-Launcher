@@ -5,14 +5,14 @@ from dropbox.client import DropboxOAuth2FlowNoRedirect, DropboxClient
 from dropbox import rest as dbrest
 
 
-def load_config(config_file):
+def load_config():
     config = ConfigParser.ConfigParser()
-    config.read(config_file)
+    config.read('.poom')
     return config
 
 
 def save_token(config):
-    config_file = open('.auth', 'w')
+    config_file = open('.poom', 'w')
     config.set("Auth", "access_token", access_token)
     config.write(config_file)
     config_file.close()
@@ -29,7 +29,7 @@ def try_again():
 def connect():
     global access_token, user_id
 
-    auth = load_config('.auth')
+    auth = load_config()
     app_key = auth.get("Auth", "app_key")
     app_secret = auth.get("Auth", "app_secret")
     access_token = auth.get("Auth", "access_token")
@@ -69,12 +69,22 @@ def connect():
 
 def upload_file(file_path):
     dc = DropboxClient(access_token)
-    f = open(file_path, 'rb')
-    file_name = os.path.basename(file_path)
-    response = dc.put_file(file_name, f)
-    f.close()
+    try:
+        f = open(file_path, 'rb')
+        file_name = os.path.basename(file_path)
+        dc.put_file(file_name, f, overwrite=True)
+        f.close()
+        shared_file = dc.media(file_name)
+        return shared_file['url']
+    except IOError:
+        print "Error: can\'t find file or read data"
+    except dbrest.ErrorResponse, e:
+        print ("Error: %s" % (e,))
 
-    print dc.media(file_name)
+
+def open_file_in_ms_office(file_path):
+    dropbox_url = upload_file(file_path)
+
 
 
 if __name__ == '__main__':
@@ -82,5 +92,3 @@ if __name__ == '__main__':
     file = sys.argv[1]
     if file != '':
         upload_file(file)
-
-
