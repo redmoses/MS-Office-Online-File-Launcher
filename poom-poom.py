@@ -6,12 +6,12 @@ from dropbox import rest as dbrest
 
 
 def load_config():
+    global config
     config = ConfigParser.ConfigParser()
     config.read('settings.ini')
-    return config
 
 
-def save_token(config):
+def save_token():
     config_file = open('settings.ini', 'w')
     config.set("Auth", "access_token", access_token)
     config.write(config_file)
@@ -28,11 +28,9 @@ def try_again():
 
 def connect():
     global access_token, user_id
-
-    auth = load_config()
-    app_key = auth.get("Auth", "app_key")
-    app_secret = auth.get("Auth", "app_secret")
-    access_token = auth.get("Auth", "access_token")
+    app_key = config.get("Auth", "app_key")
+    app_secret = config.get("Auth", "app_secret")
+    access_token = config.get("Auth", "access_token")
 
     if access_token == '':
         auth_flow = DropboxOAuth2FlowNoRedirect(app_key, app_secret)
@@ -45,23 +43,19 @@ def connect():
         try:
             access_token, user_id = auth_flow.finish(auth_code)
         except dbrest.ErrorResponse, e:
-            if e.status == 400:
-                print('Error: It seems your authorization code is invalid.')
-            else:
-                print("Error: %s" % (e,))
-
+            print("Error: %s" % (e,))
             try_again()
 
             return
         finally:
-            save_token(auth)
+            save_token()
     else:
         try:
             dc = DropboxClient(access_token).account_info()
         except dbrest.ErrorResponse, e:
             print("Error: %s" % (e,))
             access_token = ''
-            save_token(auth)
+            save_token()
             try_again()
 
             return
@@ -74,7 +68,7 @@ def upload_file(file_path):
         file_name = os.path.basename(file_path)
         dc.put_file(file_name, f, overwrite=True)
         f.close()
-        shared_file = dc.media(file_name)
+        shared_file = dc.share(file_name)
         return shared_file['url']
     except IOError:
         print "Error: can\'t find file or read data"
@@ -83,12 +77,17 @@ def upload_file(file_path):
 
 
 def open_file_in_ms_office(file_path):
+    ms_office = config.get("General", "ms_office")
     dropbox_url = upload_file(file_path)
-
+    url = ms_office + dropbox_url
+    url_open_cmd = 'xdg-open \"%s\" > /dev/null 2>&1 &' % (url)
+    print(url_open_cmd)
+    #os.sysconf(url_open_cmd)
 
 
 if __name__ == '__main__':
+    load_config()
     connect()
     file = sys.argv[1]
     if file != '':
-        upload_file(file)
+        open_file_in_ms_office(file)
