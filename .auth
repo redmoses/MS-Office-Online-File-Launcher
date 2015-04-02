@@ -1,3 +1,5 @@
 [Auth]
-APP_KEY:
-APP_SECRET:
+app_key =
+app_secret =
+access_token =
+
