@@ -7,12 +7,12 @@ from dropbox import rest as dbrest
 
 def load_config():
     config = ConfigParser.ConfigParser()
-    config.read('.poom')
+    config.read('settings.ini')
     return config
 
 
 def save_token(config):
-    config_file = open('.poom', 'w')
+    config_file = open('settings.ini', 'w')
     config.set("Auth", "access_token", access_token)
     config.write(config_file)
     config_file.close()
