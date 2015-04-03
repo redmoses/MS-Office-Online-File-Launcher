@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import ConfigParser
 import sys
 import os
@@ -7,10 +5,10 @@ from dropbox.client import DropboxOAuth2FlowNoRedirect, DropboxClient
 from dropbox import rest as dbrest
 
 
-def load_config(root_dir):
+def load_config():
     global config
     config = ConfigParser.ConfigParser()
-    config.read(root_dir + '/settings.ini')
+    config.read('settings.ini')
 
 
 def save_token():
@@ -83,8 +81,8 @@ def open_file_in_ms_office(file_path):
     os.system(url_open_cmd)
 
 
-if __name__ == '__main__':
-    load_config(os.path.dirname(sys.argv[0]))
+def main():
+    load_config()
     connect()
     file = sys.argv[1]
     if file != '':
