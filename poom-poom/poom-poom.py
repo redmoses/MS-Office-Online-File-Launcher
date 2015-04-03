@@ -5,17 +5,20 @@ from dropbox.client import DropboxOAuth2FlowNoRedirect, DropboxClient
 from dropbox import rest as dbrest
 
 
-def load_config():
+def load_config(root_dir):
     global config
     config = ConfigParser.ConfigParser()
-    config.read('settings.ini')
+    config.read(root_dir + '/settings.ini')
 
 
 def save_token():
-    config_file = open('settings.ini', 'w')
-    config.set("Auth", "access_token", access_token)
-    config.write(config_file)
-    config_file.close()
+    try:
+        config_file = open('settings.ini', 'w')
+        config.set("Auth", "access_token", access_token)
+        config.write(config_file)
+        config_file.close()
+    except IOError, e:
+        print "Error: %s" % e
 
 
 def try_again():
@@ -45,8 +48,6 @@ def connect():
         except dbrest.ErrorResponse, e:
             print("Error: %s" % (e,))
             try_again()
-
-            return
         finally:
             save_token()
     else:
@@ -58,18 +59,14 @@ def connect():
             save_token()
             try_again()
 
-            return
-
 
 def upload_file(file_path):
     dc = DropboxClient(access_token)
     try:
         f = open(file_path, 'rb')
         file_name = os.path.basename(file_path)
-        dc.put_file(file_name, f, overwrite=True)
+        dc.put_file(file_name, f)
         f.close()
-        shared_file = dc.share(file_name)
-        return shared_file['url']
     except IOError:
         print "Error: can\'t find file or read data"
     except dbrest.ErrorResponse, e:
@@ -77,16 +74,15 @@ def upload_file(file_path):
 
 
 def open_file_in_ms_office(file_path):
-    ms_office = config.get("General", "ms_office")
-    dropbox_url = upload_file(file_path)
-    url = ms_office + dropbox_url
+    office_url = config.get("General", "office_url")
+    upload_file(file_path)
+    url = office_url + os.path.basename(file_path)
     url_open_cmd = 'xdg-open \"%s\" > /dev/null 2>&1 &' % (url)
-    print(url_open_cmd)
-    #os.sysconf(url_open_cmd)
+    os.system(url_open_cmd)
 
 
 if __name__ == '__main__':
-    load_config()
+    load_config(os.path.dirname(sys.argv[0]))
     connect()
     file = sys.argv[1]
     if file != '':
