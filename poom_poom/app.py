@@ -6,8 +6,6 @@ from dropbox.client import DropboxOAuth2FlowNoRedirect, DropboxClient
 from dropbox import rest as dbrest
 
 
-
-
 # create a blank config file if it doesn't exist
 def create_config():
     try:
@@ -17,9 +15,9 @@ def create_config():
         config.add_section('Auth')
         config.add_section('General')
         # add the required attributes
-        config.set('Auth','app_key')
-        config.set('Auth','app_secret')
-        config.set('Auth','access_token')
+        config.set('Auth','app_key', '')
+        config.set('Auth','app_secret', '')
+        config.set('Auth','access_token', '')
         # the url for opening file through dropbox in Microsoft Office Online
         config.set('General','office_url', 'https://www.dropbox.com/ow/msft/edit/home/Apps/Poom-Poom/')
         # write the configurations to the file
@@ -64,13 +62,18 @@ def try_again():
 
 
 # authenticate the client with dropbox and generate the access_token
-# save the acess_token in a global variable
+# save the access_token in a global variable
 def connect():
     global access_token
     # load the required configurations
     app_key = config.get('Auth', 'app_key')
     app_secret = config.get('Auth', 'app_secret')
     access_token = config.get('Auth', 'access_token')
+    # check if app_key and access_token are present in the config file
+    if app_key == '' or app_secret == '':
+        print "You must provide the required parameters in the config file which is located in %s" % config_file_path
+        quit(0)
+
     # if access_token doesn't exist authenticate
     if access_token == '':
         # start the flow with app_key and app_secret from config file
@@ -129,13 +132,9 @@ def open_file_in_ms_office(file_path):
 # the entry point function for the app
 def run():
     global config_file_path
-    config_file_path = '~/.poom-poom.config'
+    config_file_path = os.path.expanduser('~') + '/.config/poom-poom.ini'
     load_config()
     connect()
     file = sys.argv[1]
     if file != '':
         open_file_in_ms_office(file)
-
-
-if __name__ == '__main__':
-    run()
