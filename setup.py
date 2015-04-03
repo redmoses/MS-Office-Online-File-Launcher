@@ -9,4 +9,8 @@ setup(name='poom-poom',
       license='MIT',
       packages=['poom-poom'],
       install_requires=['dropbox'],
+      entry_points = {
+        'console_scripts': ['poom-poom=poom-poom.app:main'],
+      },
+      include_package_data=True,
       zip_safe=False)
