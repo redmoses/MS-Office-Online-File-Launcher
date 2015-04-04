@@ -2,6 +2,7 @@ import ConfigParser
 import sys
 
 import os
+import filecmp
 from dropbox.client import DropboxOAuth2FlowNoRedirect, DropboxClient
 from dropbox import rest as dbrest
 
@@ -103,6 +104,29 @@ def connect():
             try_again()
 
 
+# check if file is to be synced or uploaded
+def to_be_synced(file_path):
+    client = DropboxClient(access_token)
+    # check if file exists on Dropbox
+    file_name = os.path.basename(file_path)
+    tmp_file = open(file_path + '.poom', 'wb+')
+    local_file = open(file_path, 'r')
+
+    try:
+        with client.get_file('/'+file_name) as f:
+            tmp_file.write(f.read())
+
+        f.close()
+        if not filecmp.cmp(local_file, tmp_file, shallow=0):
+            tmp_file.close()
+            local_file.close()
+            os.remove(file_path)
+            os.rename(file_path + '.poom', file_path)
+    except dbrest.ErrorResponse, e:
+        if e.status == 404:
+            return False
+
+
 # upload file to dropbox
 def upload_file(file_path):
     dc = DropboxClient(access_token)
@@ -122,7 +146,8 @@ def open_file_in_ms_office(file_path):
     # get the online office url
     office_url = config.get('General', 'office_url')
     # upload the file to dropbox to this application's directory
-    upload_file(file_path)
+    if not to_be_synced(file_path):
+        upload_file(file_path)
     # open the default system browser with the link
     url = office_url + os.path.basename(file_path)
     url_open_cmd = 'xdg-open \'%s\' > /dev/null 2>&1 &' % (url)
@@ -132,7 +157,7 @@ def open_file_in_ms_office(file_path):
 # the entry point function for the app
 def run():
     global config_file_path
-    config_file_path = os.path.expanduser('~') + '/.config/poom-poom.ini'
+    config_file_path = os.path.expanduser('~') + '/.config/poom-poom/config.ini'
     load_config()
     connect()
     file = sys.argv[1]
