@@ -121,7 +121,7 @@ def upload_file(file_path):
 def open_file_in_ms_office(file_path):
     # get the online office url
     office_url = config.get('General', 'office_url')
-    # upload the file to dropbox to this app's directory
+    # upload the file to dropbox to this application's directory
     upload_file(file_path)
     # open the default system browser with the link
     url = office_url + os.path.basename(file_path)
