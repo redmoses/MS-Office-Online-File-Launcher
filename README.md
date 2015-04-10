@@ -14,7 +14,23 @@ This is primarily a Dropbox app and acts as a Dropbox client. The app doesn't ha
 Dropbox files. So when you open a document with the app it first uploads the file to its own directory on your 
 Dropbox and then open the file from there using the Microsoft Office online edition.
 
-## And finally with What?
-
+## With What?
 -	Python 2.7.8
 -	The superb [Dropbox API](https://www.dropbox.com/developers/core/docs/python) for python.
+
+-----------------------------------------------------------------------------------------
+
+## Installation
+For system installation using pip
+
+```bash
+sudo pip install poom_poom
+```
+
+For installing from github source
+
+```bash
+git clone https://github.com/redmoses/poom-poom.git
+cd poom-poom
+python setup.py install
+```

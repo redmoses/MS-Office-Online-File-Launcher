@@ -2,6 +2,7 @@ import ConfigParser
 import time
 import sys
 import logging
+import platform
 
 from tzlocal import get_localzone
 import pytz
@@ -23,7 +24,6 @@ def create_config():
         config_file = open(config_file_path, 'w')
         # add required sections
         config.add_section('Auth')
-        config.add_section('General')
         # add the required attributes
         config.set('Auth', 'access_token', '')
         # the url for opening file through dropbox in Microsoft Office Online
@@ -147,7 +147,6 @@ def to_be_synced(file_path):
             logger.debug("Newer version on local disk")
             return False
 
-
         return True
     except dbrest.ErrorResponse, e:
         if e.status == 404:
@@ -177,7 +176,12 @@ def open_file_in_ms_office(file_path):
         upload_file(file_path)
     # open the default system browser with the link
     url = office_url + os.path.basename(file_path)
-    url_open_cmd = 'xdg-open \'%s\' > /dev/null 2>&1 &' % (url)
+
+    if platform.system() == 'Linux':
+        url_open_cmd = 'xdg-open \'%s\' > /dev/null 2>&1 &' % url
+    else:  # assuming its mac
+        url_open_cmd = 'open %s' % url
+
     os.system(url_open_cmd)
 
 
@@ -185,9 +189,14 @@ def open_file_in_ms_office(file_path):
 def run():
     load_config()
     connect()
-    file = sys.argv[1]
-    if file != '':
-        open_file_in_ms_office(file)
+    file_path = sys.argv[1]
+    if file_path != '':
+        if os.path.isfile(file_path):
+            open_file_in_ms_office(file_path)
+        else:
+            print "The file doesn't exist"
+    else:
+        print "You haven't provided any file path"
 
 
 # for running inside ide
