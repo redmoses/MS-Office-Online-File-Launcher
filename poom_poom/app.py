@@ -12,7 +12,10 @@ from dropbox.client import DropboxOAuth2FlowNoRedirect, DropboxClient
 from dropbox import rest as dbrest
 
 
-config_file_path = os.path.expanduser('~') + '/.config/poom-poom/config.ini'
+app_dir = os.path.expanduser('~') + '/.config/poom-poom'
+if not os.path.isdir(app_dir):
+    os.makedirs(app_dir)
+config_file_path = app_dir + '/config.ini'
 logging.basicConfig(filename=os.path.expanduser('~') + '/.config/poom-poom/app.log', level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
@@ -24,6 +27,7 @@ def create_config():
         config_file = open(config_file_path, 'w')
         # add required sections
         config.add_section('Auth')
+        config.add_section('General')
         # add the required attributes
         config.set('Auth', 'access_token', '')
         # the url for opening file through dropbox in Microsoft Office Online
