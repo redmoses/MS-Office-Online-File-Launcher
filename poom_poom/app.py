@@ -1,7 +1,6 @@
 import ConfigParser
 import time
 import sys
-import filecmp
 import logging
 
 from tzlocal import get_localzone
@@ -129,25 +128,25 @@ def to_be_synced(file_path):
 
         f.close()
         tmp_file.close()
-        if not filecmp.cmp(file_path, file_path + '.poom', shallow=False):
-            logger.debug("Comparing files...")
-            # get dropbox file info
-            dr_file_data = dc.metadata('/' + file_name)
-            # get dropbox file last modified time in UTC
-            dr_time = parse(dr_file_data['modified'])
-            # get local file last modified time
-            file_localtime = parse(time.ctime(os.path.getmtime(file_path)))
-            # convert local time to utc
-            local_dt = get_localzone().localize(file_localtime, is_dst=None)
-            loc_time = local_dt.astimezone(pytz.utc)
-            # compare the last modified times
-            if dr_time > loc_time:
-                logger.debug("Newer version on dropbox")
-                os.remove(file_path)
-                os.rename(file_path + '.poom', file_path)
-            else:
-                logger.debug("Newer version on local disk")
-                return False
+        logger.debug("Comparing files...")
+        # get dropbox file info
+        dr_file_data = dc.metadata('/' + file_name)
+        # get dropbox file last modified time in UTC
+        dr_time = parse(dr_file_data['modified'])
+        # get local file last modified time
+        file_localtime = parse(time.ctime(os.path.getmtime(file_path)))
+        # convert local time to utc
+        local_dt = get_localzone().localize(file_localtime, is_dst=None)
+        loc_time = local_dt.astimezone(pytz.utc)
+        # compare the last modified times
+        if dr_time > loc_time:
+            logger.debug("Newer version on dropbox")
+            os.remove(file_path)
+            os.rename(file_path + '.poom', file_path)
+        else:
+            logger.debug("Newer version on local disk")
+            return False
+
 
         return True
     except dbrest.ErrorResponse, e:
