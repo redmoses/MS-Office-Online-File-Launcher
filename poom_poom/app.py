@@ -78,10 +78,6 @@ def connect():
     app_key = 'arooyipgidhmj01'
     app_secret = 'sy3q5sdz6s1qtzk'
     access_token = config.get('Auth', 'access_token')
-    # check if app_key and access_token are present in the config file
-    if app_key == '' or app_secret == '':
-        print "You must provide the required parameters in the config file which is located in %s" % config_file_path
-        quit(0)
 
     # if access_token doesn't exist authenticate
     if access_token == '':
