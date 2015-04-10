@@ -26,8 +26,6 @@ def create_config():
         config.add_section('Auth')
         config.add_section('General')
         # add the required attributes
-        config.set('Auth', 'app_key', '')
-        config.set('Auth', 'app_secret', '')
         config.set('Auth', 'access_token', '')
         # the url for opening file through dropbox in Microsoft Office Online
         config.set('General', 'office_url', 'https://www.dropbox.com/ow/msft/edit/home/Apps/Poom-Poom/')
@@ -77,8 +75,8 @@ def try_again():
 def connect():
     global access_token
     # load the required configurations
-    app_key = config.get('Auth', 'app_key')
-    app_secret = config.get('Auth', 'app_secret')
+    app_key = 'arooyipgidhmj01'
+    app_secret = 'sy3q5sdz6s1qtzk'
     access_token = config.get('Auth', 'access_token')
     # check if app_key and access_token are present in the config file
     if app_key == '' or app_secret == '':
@@ -154,7 +152,6 @@ def to_be_synced(file_path):
             else:
                 logger.debug("Newer version on local disk")
                 return False
-
 
         return True
     except dbrest.ErrorResponse, e:
