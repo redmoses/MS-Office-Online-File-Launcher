@@ -10,7 +10,6 @@ setup(name='poom_poom',
         'Programming Language :: Python :: 2.7',
         'Topic :: Text Editors :: Word Processors',
         'Environment :: Console',
-        'Operating System :: Linux',
         'Natural Language :: English'
       ],
       keywords='dropbox, microsoft office, office online',
