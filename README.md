@@ -12,7 +12,12 @@ to satisfy my own needs :)
 ## How?
 This is primarily a Dropbox app and acts as a Dropbox client. The app doesn't have any permission over your existing
 Dropbox files. So when you open a document with the app it first uploads the file to its own directory on your 
-Dropbox and then open the file from there using the Microsoft Office online edition.
+Dropbox and then open the file from there using the Microsoft Office online edition. 
+
+## Syncing
+Once you've edited the file in Dropbox the changes are going to be temporarily saved there. The next time you open the 
+same file using this app it will show you the last modified version of the file, meaning if the file was last modified 
+on Dropbox it will open the Dropbox version and sync your local file and vice versa.
 
 ## With What?
 -	Python 2.7.8
