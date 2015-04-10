@@ -34,3 +34,10 @@ git clone https://github.com/redmoses/poom-poom.git
 cd poom-poom
 python setup.py install
 ```
+
+## Usage
+After installing the app, use the following command to open document files
+
+```bash
+poom-poom /path/to/office/document
+```
