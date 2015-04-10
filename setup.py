@@ -19,7 +19,7 @@ setup(name='poom_poom',
       author_email='musa@redmoses.me',
       license='MIT',
       packages=['poom_poom'],
-      install_requires=['dropbox'],
+      install_requires=['dropbox', 'pytz', 'tzlocal', 'python-dateutil'],
       entry_points = {
         'console_scripts': ['poom-poom=poom_poom.app:run'],
       },
