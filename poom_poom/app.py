@@ -66,7 +66,8 @@ def save_token():
 
 # if it fails to connect to dropbox then ask the user whether they want to try again
 def try_again():
-    answer = raw_input('Do you want to try again? (y/n): ').strip()
+    answer = raw_input(
+        'It seems the app cannot connect to Dropbox at the moment. Do you want to try again? (y/n): ').strip()
     if answer == 'y':
         connect()
     else:
@@ -115,6 +116,9 @@ def connect():
         except dbrest.ErrorResponse, e:
             logger.error('Error: %s' % e)
             access_token = ''
+        except Exception, e:
+            logger.error('Error: %s' % e)
+        finally:
             save_token()
             try_again()
 
