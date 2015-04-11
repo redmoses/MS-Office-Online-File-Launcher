@@ -2,8 +2,6 @@ import ConfigParser
 import time
 import sys
 import logging
-import platform
-
 from tzlocal import get_localzone
 import pytz
 from dateutil.parser import parse
@@ -12,12 +10,16 @@ from dropbox.client import DropboxOAuth2FlowNoRedirect, DropboxClient
 from dropbox import rest as dbrest
 
 
-app_dir = os.path.expanduser('~') + '/.config/poom-poom'
-if not os.path.isdir(app_dir):
-    os.makedirs(app_dir)
-config_file_path = app_dir + '/config.ini'
-logging.basicConfig(filename=os.path.expanduser('~') + '/.config/poom-poom/app.log', level=logging.DEBUG)
-logger = logging.getLogger(__name__)
+# initialize everything
+def initialize():
+    global logger, config_file_path
+    app_dir = os.path.expanduser('~') + '/.poom'
+    if not os.path.isdir(app_dir):
+        os.makedirs(app_dir)
+    config_file_path = app_dir + '/settings.ini'
+    logging.basicConfig(app_dir + '/poom.log', level=logging.DEBUG)
+    logger = logging.getLogger(__name__)
+    logger.addHandler(logging.StreamHandler(sys.stdout))
 
 
 # create a blank config file if it doesn't exist
@@ -36,7 +38,7 @@ def create_config():
         config.write(config_file)
         config_file.close()
     except (IOError, ConfigParser.Error) as e:
-        logger.error('Error: %s' % e)
+        logger.error(e)
 
 
 # load configurations in the global 'config' variable
@@ -48,7 +50,7 @@ def load_config():
         try:
             config.read(config_file_path)
         except ConfigParser.Error, e:
-            logger.error('Error: %s' % e)
+            logger.error(e)
     else:
         create_config()
 
@@ -61,7 +63,7 @@ def save_token():
         config.write(config_file)
         config_file.close()
     except (IOError, ConfigParser.Error) as e:
-        logger.error('Error: %s' % e)
+        logger.error(e)
 
 
 # if it fails to connect to dropbox then ask the user whether they want to try again
@@ -79,8 +81,8 @@ def try_again():
 def connect():
     global access_token
     # load the required configurations
-    app_key = 'arooyipgidhmj01'
-    app_secret = 'sy3q5sdz6s1qtzk'
+    app_key = 'f0biclwqhiz4ctt'
+    app_secret = 'wc0p641zbl3hfiv'
     access_token = config.get('Auth', 'access_token')
 
     # if access_token doesn't exist authenticate
@@ -91,7 +93,7 @@ def connect():
         try:
             authorize_url = auth_flow.start()
         except Exception, e:
-            logger.error('Error: %s' % e)
+            logger.error(e)
             try_again()
 
         # ask the user to do their part in the process
@@ -103,7 +105,7 @@ def connect():
         try:
             access_token, user_id = auth_flow.finish(auth_code)
         except dbrest.ErrorResponse, e:
-            logger.error('Error: %s' % e)
+            logger.error(e)
             try_again()
         finally:
             save_token()
@@ -114,12 +116,14 @@ def connect():
             account = dc.account_info()
             logger.info('User %s successfully authorized.' % account['display_name'])
         except dbrest.ErrorResponse, e:
-            logger.error('Error: %s' % e)
+            logger.error(e)
             access_token = ''
             save_token()
             try_again()
+        except KeyboardInterrupt, e:
+            logger.error(e)
         except Exception, e:
-            logger.error('Error: %s' % e)
+            logger.error(e)
             try_again()
 
 
@@ -147,9 +151,11 @@ def to_be_synced(file_path):
         local_dt = get_localzone().localize(file_localtime, is_dst=None)
         loc_time = local_dt.astimezone(pytz.utc)
         # compare the last modified times
+        print loc_time, dr_time
         if dr_time > loc_time:
             logger.debug("Newer version on dropbox")
             os.remove(file_path)
+            logger.debug("Removed file from disk")
             os.rename(file_path + '.poom', file_path)
         else:
             logger.debug("Newer version on local disk")
@@ -172,7 +178,7 @@ def upload_file(file_path):
     except IOError:
         logger.error('Error: can\'t find file or read data')
     except dbrest.ErrorResponse, e:
-        logger.error('Error: %s' % e)
+        logger.error(e)
 
 
 # open file in Microsoft Office Online
@@ -185,16 +191,13 @@ def open_file_in_ms_office(file_path):
     # open the default system browser with the link
     url = office_url + os.path.basename(file_path)
 
-    if platform.system() == 'Linux':
-        url_open_cmd = 'xdg-open \'%s\' > /dev/null 2>&1 &' % url
-    else:  # assuming its mac
-        url_open_cmd = 'open %s' % url
-
+    url_open_cmd = 'xdg-open \'%s\' > /dev/null 2>&1 &' % url
     os.system(url_open_cmd)
 
 
 # the entry point function for the app
 def run():
+    initialize()
     load_config()
     connect()
     file_path = sys.argv[1]
