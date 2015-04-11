@@ -2,12 +2,14 @@ import ConfigParser
 import time
 import sys
 import logging
+
 from tzlocal import get_localzone
 import pytz
 from dateutil.parser import parse
 import os
 from dropbox.client import DropboxOAuth2FlowNoRedirect, DropboxClient
 from dropbox import rest as dbrest
+
 
 
 # initialize everything
@@ -17,7 +19,8 @@ def initialize():
     if not os.path.isdir(app_dir):
         os.makedirs(app_dir)
     config_file_path = app_dir + '/settings.ini'
-    logging.basicConfig(app_dir + '/poom.log', level=logging.DEBUG)
+    log_file = app_dir + '/poom.log'
+    logging.basicConfig(filename=log_file, level=logging.DEBUG)
     logger = logging.getLogger(__name__)
     logger.addHandler(logging.StreamHandler(sys.stdout))
 
@@ -33,7 +36,7 @@ def create_config():
         # add the required attributes
         config.set('Auth', 'access_token', '')
         # the url for opening file through dropbox in Microsoft Office Online
-        config.set('General', 'office_url', 'https://www.dropbox.com/ow/msft/edit/home/Apps/Poom-Poom/')
+        config.set('General', 'office_url', 'https://www.dropbox.com/ow/msft/edit/home/Apps/Poom/')
         # write the configurations to the file
         config.write(config_file)
         config_file.close()

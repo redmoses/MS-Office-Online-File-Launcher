@@ -1,7 +1,7 @@
 Poom
 =====
 
-Open document files from your linux file explorer in the free Microsoft Office Online version on your browser.
+Open document files from your local file system in the free Microsoft Office Online version on your browser.
 
 ## What?
 The app is primarily a dropbox client. When a document file is opened using the app it uploads the file to your Dropbox
