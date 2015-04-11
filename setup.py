@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='poom_poom',
-      version='1.0.2',
+      version='1.0.3',
       description='Open office documents with Microsoft Office Online',
       long_description="This is primarily a Dropbox app and acts as a Dropbox client."
                        " The app doesn't have any permission over your existing Dropbox files."
