@@ -116,10 +116,10 @@ def connect():
         except dbrest.ErrorResponse, e:
             logger.error('Error: %s' % e)
             access_token = ''
+            save_token()
+            try_again()
         except Exception, e:
             logger.error('Error: %s' % e)
-        finally:
-            save_token()
             try_again()
 
 
