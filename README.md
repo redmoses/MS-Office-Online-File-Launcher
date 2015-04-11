@@ -32,14 +32,14 @@ on Dropbox it will open the Dropbox version and sync your local file and vice ve
 For system installation using pip
 
 ```bash
-sudo pip install poom_poom
+sudo pip install poom
 ```
 
 For installing from github source
 
 ```bash
-git clone https://github.com/redmoses/poom-poom.git
-cd poom-poom
+git clone https://github.com/redmoses/poom.git
+cd poom
 python setup.py install
 ```
 
@@ -47,5 +47,5 @@ python setup.py install
 After installing the app, use the following command to open document files
 
 ```bash
-poom-poom /path/to/office/document
+poom /path/to/office/document
 ```
