@@ -5,8 +5,8 @@ Open document files from your linux file explorer in the free Microsoft Office O
 
 ## What?
 The app is primarily a dropbox client. When a document file is opened using the app it uploads the file to your Dropbox
-and opens it from there using Microsoft Office Online. I have built the app using 
-
+and opens it from there using Microsoft Office Online.
+### Technology
 -	Python 2.7.8
 -	The superb [Dropbox API](https://www.dropbox.com/developers/core/docs/python) for python.
 
