@@ -25,6 +25,17 @@
 <p>Open document files from your linux file explorer in the free Microsoft Office Online version on your browser.</p>
 
 <h2>
+<a id="what" class="anchor" href="#what" aria-hidden="true"><span class="octicon octicon-link"></span></a>What?</h2>
+
+<p>The app is primarily a dropbox client. When a document file is opened using the app it uploads the file to your Dropbox
+and opens it from there using Microsoft Office Online. I have built the app using </p>
+
+<ul>
+<li>  Python 2.7.8</li>
+<li>  The superb <a href="https://www.dropbox.com/developers/core/docs/python">Dropbox API</a> for python.</li>
+</ul>
+
+<h2>
 <a id="why" class="anchor" href="#why" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why?</h2>
 
 <p>I know Microsoft is Evil, but no matter what you can't deny one of their best creations, and that is Microsoft Office.
@@ -35,20 +46,12 @@ to satisfy my own needs :)</p>
 <h2>
 <a id="how" class="anchor" href="#how" aria-hidden="true"><span class="octicon octicon-link"></span></a>How?</h2>
 
-<p>This is primarily a Dropbox app and acts as a Dropbox client. The app doesn't have any permission over your existing
-Dropbox files. So when you open a document with the app it first uploads the file to its own directory on your 
-Dropbox and then open the file from there using the Microsoft Office online edition.</p>
+<p>The app doesn't have any permission over your existing Dropbox files. So when you open a document with the app it first 
+uploads the file to its own directory on your Dropbox and then open the file from there using the Microsoft Office 
+online edition.</p>
 
 <h2>
-<a id="with-what" class="anchor" href="#with-what" aria-hidden="true"><span class="octicon octicon-link"></span></a>With What?</h2>
-
-<ul>
-<li>  Python 2.7.8</li>
-<li>  The superb <a href="https://www.dropbox.com/developers/core/docs/python">Dropbox API</a> for python.</li>
-</ul>
-
-<h2>
-<a id="file-syncing" class="anchor" href="#file-syncing" aria-hidden="true"><span class="octicon octicon-link"></span></a>File Syncing</h2>
+<a id="file-syncing-feature" class="anchor" href="#file-syncing-feature" aria-hidden="true"><span class="octicon octicon-link"></span></a>File Syncing Feature</h2>
 
 <p>Once you've edited the file in Dropbox the changes are going to be temporarily saved there. The next time you open the 
 same file using this app it will show you the last modified version of the file, meaning if the file was last modified 
@@ -61,12 +64,12 @@ on Dropbox it will open the Dropbox version and sync your local file and vice ve
 
 <p>For system installation using pip</p>
 
-<div class="highlight highlight-bash"><pre>sudo pip install poom_poom</pre></div>
+<div class="highlight highlight-bash"><pre>sudo pip install poom</pre></div>
 
 <p>For installing from github source</p>
 
-<div class="highlight highlight-bash"><pre>git clone https://github.com/redmoses/poom-poom.git
-<span class="pl-c1">cd</span> poom-poom
+<div class="highlight highlight-bash"><pre>git clone https://github.com/redmoses/poom.git
+<span class="pl-c1">cd</span> poom
 python setup.py install</pre></div>
 
 <h2>
@@ -74,7 +77,7 @@ python setup.py install</pre></div>
 
 <p>After installing the app, use the following command to open document files</p>
 
-<div class="highlight highlight-bash"><pre>poom-poom /path/to/office/document</pre></div>
+<div class="highlight highlight-bash"><pre>poom /path/to/office/document</pre></div>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/redmoses/poom">Poom</a> is maintained by <a href="https://github.com/redmoses">redmoses</a>.</span>
