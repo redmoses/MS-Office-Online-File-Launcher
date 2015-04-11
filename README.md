@@ -1,5 +1,5 @@
-Poom-Poom
-=========
+Poom
+=====
 
 Open document files from your linux file explorer in the free Microsoft Office Online version on your browser.
 
