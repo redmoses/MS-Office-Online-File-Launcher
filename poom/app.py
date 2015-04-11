@@ -2,6 +2,7 @@ import ConfigParser
 import time
 import sys
 import logging
+import webbrowser
 
 from tzlocal import get_localzone
 import pytz
@@ -9,6 +10,7 @@ from dateutil.parser import parse
 import os
 from dropbox.client import DropboxOAuth2FlowNoRedirect, DropboxClient
 from dropbox import rest as dbrest
+
 
 
 
@@ -193,9 +195,7 @@ def open_file_in_ms_office(file_path):
         upload_file(file_path)
     # open the default system browser with the link
     url = office_url + os.path.basename(file_path)
-
-    url_open_cmd = 'xdg-open \'%s\' > /dev/null 2>&1 &' % url
-    os.system(url_open_cmd)
+    webbrowser.open(url)
 
 
 # the entry point function for the app
