@@ -6,6 +6,7 @@ Open document files from your local file system in the free Microsoft Office Onl
 ## What?
 The app is primarily a dropbox client. When a document file is opened using the app it uploads the file to your Dropbox
 and opens it from there using Microsoft Office Online.
+
 ### Technology
 -   Python 3 
 -	Python 2.7.8 (older version 0.0.2)
@@ -24,10 +25,16 @@ on Dropbox it will open the Dropbox version and sync your local file and vice ve
 -----------------------------------------------------------------------------------------
 
 ## Installation
-For system installation using pip
+### Latest version (Python 3)
 
 ```bash
 sudo pip install poom
+```
+
+If Python 3 is not the default interpreter in your system then you must install the package using pip3
+
+```bash
+sudo pip3 install poom
 ```
 
 For installing from github source
@@ -36,6 +43,12 @@ For installing from github source
 git clone https://github.com/redmoses/poom.git
 cd poom
 python setup.py install
+```
+
+### Installing version 0.0.2 (Python 2)
+
+```bash
+sudo pip install poom=0.0.2
 ```
 
 ## Usage
