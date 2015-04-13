@@ -22,10 +22,11 @@ Once you've edited the file in Dropbox the changes are going to be temporarily s
 same file using this app it will show you the last modified version of the file, meaning if the file was last modified 
 on Dropbox it will open the Dropbox version and sync your local file and vice versa.
 
------------------------------------------------------------------------------------------
 
 ## Installation
 ### Latest version (Python 3)
+
+For system installation
 
 ```bash
 sudo pip install poom
@@ -47,11 +48,14 @@ python setup.py install
 
 ### Installing version 0.0.2 (Python 2)
 
+For system installation
+
 ```bash
 sudo pip install poom=0.0.2
 ```
 
 ## Usage
+
 After installing the app, use the following command to open document files
 
 ```bash
