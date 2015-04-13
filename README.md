@@ -43,6 +43,9 @@ For installing from github source
 ```bash
 git clone https://github.com/redmoses/poom.git
 cd poom
+# for python2 as the system's default python
+python3 setup.py install
+# for python3 as the system's default python
 python setup.py install
 ```
 
