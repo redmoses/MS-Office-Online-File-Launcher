@@ -14,6 +14,7 @@ from dropbox import rest as dbrest
 
 
 
+
 # initialize everything
 def initialize():
     global logger, config_file_path
@@ -24,7 +25,6 @@ def initialize():
     log_file = app_dir + '/poom.log'
     logging.basicConfig(filename=log_file, level=logging.DEBUG)
     logger = logging.getLogger(__name__)
-    logger.addHandler(logging.StreamHandler(sys.stdout))
 
 
 # create a blank config file if it doesn't exist
