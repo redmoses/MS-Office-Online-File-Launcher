@@ -1,4 +1,4 @@
-import ConfigParser
+import configparser
 import time
 import sys
 import logging
@@ -10,6 +10,7 @@ from dateutil.parser import parse
 import os
 from dropbox.client import DropboxOAuth2FlowNoRedirect, DropboxClient
 from dropbox import rest as dbrest
+
 
 
 
@@ -42,7 +43,7 @@ def create_config():
         # write the configurations to the file
         config.write(config_file)
         config_file.close()
-    except (IOError, ConfigParser.Error) as e:
+    except (IOError, configparser.Error) as e:
         logger.error(e)
 
 
@@ -50,11 +51,11 @@ def create_config():
 # if configuration file doesn't exist create one
 def load_config():
     global config
-    config = ConfigParser.ConfigParser()
+    config = configparser.ConfigParser()
     if os.path.isfile(config_file_path):
         try:
             config.read(config_file_path)
-        except ConfigParser.Error, e:
+        except configparser.Error as e:
             logger.error(e)
     else:
         create_config()
@@ -67,13 +68,13 @@ def save_token():
         config.set('Auth', 'access_token', access_token)
         config.write(config_file)
         config_file.close()
-    except (IOError, ConfigParser.Error) as e:
+    except (IOError, configparser.Error) as e:
         logger.error(e)
 
 
 # if it fails to connect to dropbox then ask the user whether they want to try again
 def try_again():
-    answer = raw_input(
+    answer = input(
         'It seems the app cannot connect to Dropbox at the moment. Do you want to try again? (y/n): ').strip()
     if answer == 'y':
         connect()
@@ -97,19 +98,19 @@ def connect():
 
         try:
             authorize_url = auth_flow.start()
-        except Exception, e:
+        except Exception as e:
             logger.error(e)
             try_again()
 
         # ask the user to do their part in the process
-        print '1. Go to: ' + authorize_url
-        print '2. Click \'Allow\' (you might have to log in first).'
-        print '3. Copy the authorization code.'
-        auth_code = raw_input('Enter the authorization code here: ').strip()
+        print('1. Go to: ' + authorize_url)
+        print('2. Click \'Allow\' (you might have to log in first).')
+        print('3. Copy the authorization code.')
+        auth_code = input('Enter the authorization code here: ').strip()
         # use the auth code to get the access_token
         try:
             access_token, user_id = auth_flow.finish(auth_code)
-        except dbrest.ErrorResponse, e:
+        except dbrest.ErrorResponse as e:
             logger.error(e)
             try_again()
         finally:
@@ -120,14 +121,14 @@ def connect():
             dc = DropboxClient(access_token)
             account = dc.account_info()
             logger.info('User %s successfully authorized.' % account['display_name'])
-        except dbrest.ErrorResponse, e:
+        except dbrest.ErrorResponse as e:
             logger.error(e)
             access_token = ''
             save_token()
             try_again()
-        except KeyboardInterrupt, e:
+        except KeyboardInterrupt as e:
             logger.error(e)
-        except Exception, e:
+        except Exception as e:
             logger.error(e)
             try_again()
 
@@ -156,7 +157,6 @@ def to_be_synced(file_path):
         local_dt = get_localzone().localize(file_localtime, is_dst=None)
         loc_time = local_dt.astimezone(pytz.utc)
         # compare the last modified times
-        print loc_time, dr_time
         if dr_time > loc_time:
             logger.debug("Newer version on dropbox")
             os.remove(file_path)
@@ -167,7 +167,7 @@ def to_be_synced(file_path):
             return False
 
         return True
-    except dbrest.ErrorResponse, e:
+    except dbrest.ErrorResponse as e:
         if e.status == 404:
             return False
 
@@ -182,7 +182,7 @@ def upload_file(file_path):
         f.close()
     except IOError:
         logger.error('Error: can\'t find file or read data')
-    except dbrest.ErrorResponse, e:
+    except dbrest.ErrorResponse as e:
         logger.error(e)
 
 
@@ -208,9 +208,9 @@ def run():
         if os.path.isfile(file_path):
             open_file_in_ms_office(file_path)
         else:
-            print "The file doesn't exist"
+            print("The file doesn't exist")
     else:
-        print "You haven't provided any file path"
+        print("You haven't provided any file path")
 
 
 # for running inside ide
