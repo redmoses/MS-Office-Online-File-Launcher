@@ -1,4 +1,3 @@
-====
 Poom
 ====
 
@@ -38,14 +37,13 @@ app it will show you the last modified version of the file, meaning if
 the file was last modified on Dropbox it will open the Dropbox version
 and sync your local file and vice versa.
 
-
 Installation
 ------------
 
 Latest version (Python 3)
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For installing on your system
+For system installation
 
 .. code:: bash
 
@@ -64,13 +62,15 @@ For installing from github source
 
     git clone https://github.com/redmoses/poom.git
     cd poom
-    python setup.py install
-
+    # for python2 as the system's default python
+    sudo python3 setup.py install
+    # for python3 as the system's default python
+    sudo python setup.py install
 
 Installing version 0.0.2 (Python 2)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For installing on your system
+For system installation
 
 .. code:: bash
 

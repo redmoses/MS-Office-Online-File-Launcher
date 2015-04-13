@@ -44,9 +44,9 @@ For installing from github source
 git clone https://github.com/redmoses/poom.git
 cd poom
 # for python2 as the system's default python
-python3 setup.py install
+sudo python3 setup.py install
 # for python3 as the system's default python
-python setup.py install
+sudo python setup.py install
 ```
 
 ### Installing version 0.0.2 (Python 2)
