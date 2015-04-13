@@ -34,7 +34,8 @@ and opens it from there using Microsoft Office Online.</p>
 <a id="technology" class="anchor" href="#technology" aria-hidden="true"><span class="octicon octicon-link"></span></a>Technology</h3>
 
 <ul>
-<li>  Python 2.7.8</li>
+<li>  Python 3 </li>
+<li>  Python 2.7.8 (older version 0.0.2)</li>
 <li>  The superb <a href="https://www.dropbox.com/developers/core/docs/python">Dropbox API</a> for python.</li>
 </ul>
 
@@ -52,20 +53,32 @@ online edition.</p>
 same file using this app it will show you the last modified version of the file, meaning if the file was last modified 
 on Dropbox it will open the Dropbox version and sync your local file and vice versa.</p>
 
-<hr>
-
 <h2>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
 
-<p>For system installation using pip</p>
+<h3>
+<a id="latest-version-python-3" class="anchor" href="#latest-version-python-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Latest version (Python 3)</h3>
+
+<p>For system installation</p>
 
 <div class="highlight highlight-bash"><pre>sudo pip install poom</pre></div>
+
+<p>If Python 3 is not the default interpreter in your system then you must install the package using pip3</p>
+
+<div class="highlight highlight-bash"><pre>sudo pip3 install poom</pre></div>
 
 <p>For installing from github source</p>
 
 <div class="highlight highlight-bash"><pre>git clone https://github.com/redmoses/poom.git
 <span class="pl-c1">cd</span> poom
 python setup.py install</pre></div>
+
+<h3>
+<a id="installing-version-002-python-2" class="anchor" href="#installing-version-002-python-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installing version 0.0.2 (Python 2)</h3>
+
+<p>For system installation</p>
+
+<div class="highlight highlight-bash"><pre>sudo pip install poom=0.0.2</pre></div>
 
 <h2>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
