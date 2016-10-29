@@ -1,4 +1,4 @@
-Poom
+MS Office Online File Launcher
 =====
 
 Open document files from your local file system in the free Microsoft Office Online version on your browser.
